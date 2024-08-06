@@ -1,0 +1,56 @@
+import pickle
+import os
+
+TASKS_FILE = "tasks.pkl"
+
+def load_tasks():
+    if os.path.exists(TASKS_FILE):
+        with open(TASKS_FILE, "rb") as file:
+            return pickle.load(file)
+    return []
+
+def save_tasks(tasks):
+    with open(TASKS_FILE, "wb") as file:
+        pickle.dump(tasks, file)
+
+def display_tasks(tasks):
+    if tasks:
+        for i, task in enumerate(tasks, 1):
+            print(f"{i}. {task}")
+    else:
+        print("No tasks found.")
+
+def main():
+    tasks = load_tasks()
+    while True:
+        print("\n1. View Tasks\n2. Add Task\n3. Remove Task\n4. Update Task\n5. Exit")
+        choice = input("Choose an option: ")
+        
+        if choice == "1":
+            display_tasks(tasks)
+        elif choice == "2":
+            tasks.append(input("Enter task: "))
+            print("Task added.")
+        elif choice == "3":
+            display_tasks(tasks)
+            try:
+                tasks.pop(int(input("Enter task number to remove: ")) - 1)
+                print("Task removed.")
+            except:
+                print("Invalid input.")
+        elif choice == "4":
+            display_tasks(tasks)
+            try:
+                index = int(input("Enter task number to update: ")) - 1
+                tasks[index] = input("New task: ")
+                print("Task updated.")
+            except:
+                print("Invalid input.")
+        elif choice == "5":
+            save_tasks(tasks)
+            break
+        else:
+            print("Invalid choice.")
+
+if __name__ == "__main__":
+    main()
